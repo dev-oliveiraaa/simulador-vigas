@@ -35,6 +35,7 @@ function Onboarding({ forceShow = false, onClose }) {
 
   useEffect(() => {
     if (forceShow) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(true)
       setCurrentStep(0)
       return
