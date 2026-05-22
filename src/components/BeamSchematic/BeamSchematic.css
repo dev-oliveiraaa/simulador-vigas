@@ -1,0 +1,22 @@
+/* ============================================
+   BeamSchematic — SVG beam drawing
+   ============================================ */
+
+.beam-schematic {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.beam-schematic__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-heading);
+  margin-bottom: var(--space-sm);
+}
+
+.beam-schematic svg {
+  width: 100%;
+  display: block;
+}

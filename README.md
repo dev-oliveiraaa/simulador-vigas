@@ -1,16 +1,64 @@
-# React + Vite
+# Simulador de Vigas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Simulador de vigas para estudantes de Engenharia Civil e Mecânica. Calcula reações de apoio, diagramas de esforço cortante V(x), momento fletor M(x) e flecha elástica δ(x).
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Configurações de apoio**: simplesmente apoiada, balanço (engastada-livre), com balanço e contínua (Clapeyron)
+- **Tipos de carga**: pontual, distribuída uniforme, distribuída trapezoidal e momento concentrado
+- **Diagramas SVG**: V(x), M(x) e δ(x) com anotação de extremos
+- **Resultados numéricos**: reações, momento máximo, flecha máxima, verificação de tensão
+- **Interface responsiva**: layout adaptável para desktop e mobile
 
-## React Compiler
+## Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React](https://react.dev/) 19
+- [Vite](https://vite.dev/) 8
+- SVG puro para diagramas (sem dependências de gráficos)
+- CSS vanilla com custom properties
 
-## Expanding the ESLint configuration
+## Como usar
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# Instalar dependências
+npm install
+
+# Iniciar servidor de desenvolvimento
+npm run dev
+
+# Build de produção
+npm run build
+```
+
+## Unidades
+
+| Grandeza | Unidade |
+|---|---|
+| Comprimento | m |
+| Força | kN |
+| Momento | kN·m |
+| Carga distribuída | kN/m |
+| Módulo de elasticidade | GPa |
+| Momento de inércia | cm⁴ |
+| Tensão | MPa |
+
+## Estrutura do Projeto
+
+```
+src/
+├── engine/          # Motor de cálculo (JS puro)
+│   ├── solver.js
+│   ├── continuousBeamSolver.js
+│   ├── deflection.js
+│   ├── diagramData.js
+│   └── validators.js
+├── components/
+│   ├── InputPanel/   # Painel de configuração
+│   ├── BeamSchematic/ # Desenho esquemático SVG
+│   ├── Diagrams/     # Diagramas V(x), M(x), δ(x)
+│   ├── ResultsTable/ # Tabela de resultados
+│   └── Onboarding/   # Tutorial de uso
+└── utils/
+    ├── constants.js
+    └── unitConversion.js
+```
