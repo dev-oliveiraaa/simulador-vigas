@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react'
 import InputPanel from './components/InputPanel/InputPanel.jsx'
+import BeamSchematic from './components/BeamSchematic/BeamSchematic.jsx'
+import DiagramPanel from './components/Diagrams/DiagramPanel.jsx'
 import { validateConfig, validateLoad } from './engine/validators.js'
 import { generateDiagramData } from './engine/diagramData.js'
 import './App.css'
@@ -110,10 +112,8 @@ function App() {
             </div>
           ) : (
             <div className="results-area">
-              {/* BeamSchematic, DiagramPanel, and ResultsTable will be integrated here */}
-              <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)' }}>
-                Resultados calculados com sucesso. Diagramas em breve.
-              </p>
+              <BeamSchematic config={results.config} />
+              <DiagramPanel results={results} />
             </div>
           )}
         </section>
