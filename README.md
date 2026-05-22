@@ -1,6 +1,6 @@
 # Simulador de Vigas
 
-Simulador de vigas para estudantes de Engenharia Civil e Mecânica. Calcula reações de apoio, diagramas de esforço cortante V(x), momento fletor M(x) e flecha elástica δ(x).
+Simulador de vigas para estudantes das Engenharias. Calcula reações de apoio, diagramas de esforço cortante V(x), momento fletor M(x) e flecha elástica δ(x).
 
 ## Funcionalidades
 
