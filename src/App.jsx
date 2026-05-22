@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import InputPanel from './components/InputPanel/InputPanel.jsx'
 import BeamSchematic from './components/BeamSchematic/BeamSchematic.jsx'
 import DiagramPanel from './components/Diagrams/DiagramPanel.jsx'
+import ResultsTable from './components/ResultsTable/ResultsTable.jsx'
 import { validateConfig, validateLoad } from './engine/validators.js'
 import { generateDiagramData } from './engine/diagramData.js'
 import './App.css'
@@ -114,6 +115,7 @@ function App() {
             <div className="results-area">
               <BeamSchematic config={results.config} />
               <DiagramPanel results={results} />
+              <ResultsTable results={results} />
             </div>
           )}
         </section>
