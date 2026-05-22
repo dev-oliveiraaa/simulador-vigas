@@ -3,6 +3,7 @@ import InputPanel from './components/InputPanel/InputPanel.jsx'
 import BeamSchematic from './components/BeamSchematic/BeamSchematic.jsx'
 import DiagramPanel from './components/Diagrams/DiagramPanel.jsx'
 import ResultsTable from './components/ResultsTable/ResultsTable.jsx'
+import Onboarding from './components/Onboarding/Onboarding.jsx'
 import { validateConfig, validateLoad } from './engine/validators.js'
 import { generateDiagramData } from './engine/diagramData.js'
 import './App.css'
@@ -14,6 +15,7 @@ import './App.css'
 function App() {
   const [results, setResults] = useState(null)
   const [errors, setErrors] = useState([])
+  const [showOnboarding, setShowOnboarding] = useState(false)
 
   const handleCalculate = useCallback((config) => {
     // Validate configuration
@@ -74,7 +76,14 @@ function App() {
           Simulador de Vigas
         </div>
         <div className="app-header__actions">
-          {/* Help button will be added in onboarding feature */}
+          <button
+            className="help-btn"
+            onClick={() => setShowOnboarding(true)}
+            aria-label="Abrir tutorial"
+            title="Tutorial"
+          >
+            ?
+          </button>
         </div>
       </header>
 
@@ -120,6 +129,11 @@ function App() {
           )}
         </section>
       </main>
+
+      <Onboarding
+        forceShow={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+      />
     </div>
   )
 }
