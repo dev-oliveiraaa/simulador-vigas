@@ -60,18 +60,10 @@ function App() {
           <svg
             className="app-header__icon"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            fill="currentColor"
             aria-hidden="true"
           >
-            <rect x="2" y="10" width="20" height="4" rx="1" />
-            <path d="M6 14l-2 4" />
-            <path d="M4 18l4 0" />
-            <path d="M18 14l2 4" />
-            <path d="M16 18l4 0" />
+            <path d="M7 4h10v2h-4v12h4v2H7v-2h4V6H7V4z" />
           </svg>
           Simulador de Vigas
         </div>
@@ -98,20 +90,10 @@ function App() {
               <svg
                 className="welcome__icon"
                 viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                fill="currentColor"
                 aria-hidden="true"
               >
-                <rect x="2" y="10" width="20" height="4" rx="1" />
-                <path d="M6 14l-2 4" />
-                <path d="M4 18l4 0" />
-                <path d="M18 14l2 4" />
-                <path d="M16 18l4 0" />
-                <path d="M12 6v4" />
-                <path d="M10 6h4" />
+                <path d="M7 4h10v2h-4v12h4v2H7v-2h4V6H7V4z" />
               </svg>
               <h2 className="welcome__title">Simulador de Vigas</h2>
               <p className="welcome__text">
