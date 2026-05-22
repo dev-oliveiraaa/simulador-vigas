@@ -1,0 +1,67 @@
+/* ============================================
+   Diagrams — V(x), M(x), δ(x) panels
+   ============================================ */
+
+.diagrams {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.diagram-panel {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.diagram-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.diagram-panel__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-heading);
+}
+
+.diagram-panel__unit {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.diagram-panel svg {
+  width: 100%;
+  display: block;
+}
+
+/* --- Axis labels --- */
+
+.diagram-axis-label {
+  font-size: 10px;
+  fill: #9ca3af;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* --- Annotation --- */
+
+.diagram-annotation {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* --- Info message for missing deflection --- */
+
+.diagram-info {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-lg);
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
