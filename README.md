@@ -1,36 +1,87 @@
 # Simulador de Vigas
 
-Simulador de vigas para estudantes das Engenharias. Calcula reações de apoio, diagramas de esforço cortante V(x), momento fletor M(x) e flecha elástica δ(x).
+Aplicação web desenvolvida para auxiliar estudantes de Engenharia na análise estrutural de vigas. O sistema calcula reações de apoio, diagramas de esforço cortante **V(x)**, momento fletor **M(x)** e flecha elástica **δ(x)** de forma visual e interativa.
+
+## Demonstração
+
+🌐 Acesse o projeto:  
+https://simulador-vigas.vercel.app/
+
+---
 
 ## Funcionalidades
 
-- **Configurações de apoio**: simplesmente apoiada, balanço (engastada-livre), com balanço e contínua (Clapeyron)
-- **Tipos de carga**: pontual, distribuída uniforme, distribuída trapezoidal e momento concentrado
-- **Diagramas SVG**: V(x), M(x) e δ(x) com anotação de extremos
-- **Resultados numéricos**: reações, momento máximo, flecha máxima, verificação de tensão
-- **Interface responsiva**: layout adaptável para desktop e mobile
+### Modelos de Viga
+- Viga simplesmente apoiada
+- Viga em balanço (engastada-livre)
+- Viga com balanço
+- Viga contínua (Método de Clapeyron)
 
-## Tecnologias
+### Tipos de Carregamento
+- Carga pontual
+- Carga distribuída uniforme
+- Carga distribuída trapezoidal
+- Momento concentrado
 
-- [React](https://react.dev/) 19
-- [Vite](https://vite.dev/) 8
-- SVG puro para diagramas (sem dependências de gráficos)
-- CSS vanilla com custom properties
+### Análises Geradas
+- Reações de apoio
+- Diagrama de esforço cortante **V(x)**
+- Diagrama de momento fletor **M(x)**
+- Diagrama de flecha elástica **δ(x)**
+- Identificação automática de valores máximos e mínimos
+- Verificação de tensão
 
-## Como usar
+### Interface
+- Layout responsivo para desktop e mobile
+- Diagramas renderizados em SVG puro
+- Interface intuitiva para configuração das vigas
+
+---
+
+## Tecnologias Utilizadas
+
+- ⚛️ React 19
+- ⚡ Vite 8
+- 🖼️ SVG puro para renderização dos diagramas
+- 🎨 CSS Vanilla com Custom Properties
+
+---
+
+## Instalação e Execução
+
+Clone o repositório:
 
 ```bash
-# Instalar dependências
+git clone https://github.com/dev-oliveiraaa/simulador-vigas.git
+```
+
+Acesse a pasta do projeto:
+
+```bash
+cd simulador-vigas
+```
+
+Instale as dependências:
+
+```bash
 npm install
+```
 
-# Iniciar servidor de desenvolvimento
+Inicie o servidor de desenvolvimento:
+
+```bash
 npm run dev
+```
 
-# Build de produção
+Para gerar a build de produção:
+
+```bash
 npm run build
 ```
 
-## Unidades
+---
+
+## Unidades Utilizadas
 
 | Grandeza | Unidade |
 |---|---|
@@ -38,27 +89,47 @@ npm run build
 | Força | kN |
 | Momento | kN·m |
 | Carga distribuída | kN/m |
-| Módulo de elasticidade | GPa |
-| Momento de inércia | cm⁴ |
+| Módulo de Elasticidade | GPa |
+| Momento de Inércia | cm⁴ |
 | Tensão | MPa |
+
+---
 
 ## Estrutura do Projeto
 
-```
+```bash
 src/
-├── engine/          # Motor de cálculo (JS puro)
+├── engine/                    # Motor de cálculo estrutural
 │   ├── solver.js
 │   ├── continuousBeamSolver.js
 │   ├── deflection.js
 │   ├── diagramData.js
 │   └── validators.js
+│
 ├── components/
-│   ├── InputPanel/   # Painel de configuração
-│   ├── BeamSchematic/ # Desenho esquemático SVG
-│   ├── Diagrams/     # Diagramas V(x), M(x), δ(x)
-│   ├── ResultsTable/ # Tabela de resultados
-│   └── Onboarding/   # Tutorial de uso
+│   ├── InputPanel/            # Painel de configuração
+│   ├── BeamSchematic/         # Esquema SVG da viga
+│   ├── Diagrams/              # Diagramas V(x), M(x) e δ(x)
+│   ├── ResultsTable/          # Resultados numéricos
+│   └── Onboarding/            # Tutorial inicial
+│
 └── utils/
     ├── constants.js
     └── unitConversion.js
 ```
+
+---
+
+## Objetivo do Projeto
+
+O projeto foi desenvolvido com foco educacional, buscando facilitar a visualização e compreensão do comportamento estrutural de vigas em disciplinas como:
+
+- Mecânica dos Sólidos
+- Mecânica das Estruturas
+- Análise Estrutural
+
+---
+
+## Autor
+
+Desenvolvido por Carlos Alexandre.
