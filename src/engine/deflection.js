@@ -6,7 +6,6 @@
  */
 
 import { sanitizeNumber } from './validators.js'
-import { NUM_POINTS } from '../utils/constants.js'
 import { gpaTokNm2, cm4ToM4 } from '../utils/unitConversion.js'
 
 /**
