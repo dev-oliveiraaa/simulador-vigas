@@ -1,0 +1,145 @@
+/* ============================================
+   InputPanel — Configuration sidebar
+   ============================================ */
+
+.input-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* --- Section groups --- */
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.input-section__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* --- Field groups --- */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.field-unit {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-left: var(--space-xs);
+}
+
+/* --- Support inputs for continuous beam --- */
+
+.support-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.support-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.support-row label {
+  font-size: var(--text-xs);
+  min-width: 70px;
+  margin-bottom: 0;
+}
+
+.support-row input {
+  flex: 1;
+}
+
+.support-row .btn {
+  flex-shrink: 0;
+}
+
+/* --- Error messages --- */
+
+.field-error {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  margin-top: 2px;
+}
+
+.error-list {
+  list-style: none;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.error-list li {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+}
+
+/* --- Calculate button area --- */
+
+.calculate-area {
+  padding-top: var(--space-sm);
+}
+
+/* --- Load List --- */
+
+.load-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.load-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+
+.load-list__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.load-list__type {
+  font-weight: 600;
+  color: var(--color-text-heading);
+}
+
+.load-list__detail {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
