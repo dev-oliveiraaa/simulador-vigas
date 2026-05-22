@@ -22,7 +22,7 @@ function App() {
     const configErrors = validateConfig(config)
 
     // Validate each load
-    if (config.length > 0) {
+    if (Number(config.length) > 0) {
       for (const load of config.loads) {
         const loadErrors = validateLoad(load, config.length)
         configErrors.push(...loadErrors)
