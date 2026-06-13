@@ -26,6 +26,16 @@ export function cm4ToM4(cm4) {
 }
 
 /**
+ * Convert moment of inertia from mm⁴ to cm⁴.
+ * 1 mm⁴ = 1e-4 cm⁴
+ * @param {number} mm4 - Moment of inertia in mm⁴
+ * @returns {number} Moment of inertia in cm⁴
+ */
+export function mm4ToCm4(mm4) {
+  return mm4 * 1e-4
+}
+
+/**
  * Convert section modulus from cm³ to m³.
  * 1 cm³ = 1e-6 m³
  * @param {number} cm3 - Section modulus in cm³
