@@ -4,18 +4,28 @@ import BeamSchematic from './components/BeamSchematic/BeamSchematic.jsx'
 import DiagramPanel from './components/Diagrams/DiagramPanel.jsx'
 import ResultsTable from './components/ResultsTable/ResultsTable.jsx'
 import Onboarding from './components/Onboarding/Onboarding.jsx'
+import ParametricPanel from './components/ParametricAnalysis/ParametricPanel.jsx'
+import ParametricChart from './components/ParametricAnalysis/ParametricChart.jsx'
+import ParametricResults from './components/ParametricAnalysis/ParametricResults.jsx'
 import { validateConfig, validateLoad } from './engine/validators.js'
 import { generateDiagramData } from './engine/diagramData.js'
+import { runParametricSweep } from './engine/parametricSweep.js'
 import './App.css'
 
 /**
  * App — Root component for the beam simulator.
  * Manages global state and orchestrates calculation flow.
+ * Supports two modes: single analysis and parametric sweep.
  */
 function App() {
+  const [mode, setMode] = useState('single') // 'single' | 'parametric'
   const [results, setResults] = useState(null)
   const [errors, setErrors] = useState([])
   const [showOnboarding, setShowOnboarding] = useState(false)
+
+  // Parametric analysis state
+  const [parametricResults, setParametricResults] = useState(null)
+  const [parametricErrors, setParametricErrors] = useState([])
 
   const handleCalculate = useCallback((config) => {
     // Validate configuration
@@ -53,6 +63,46 @@ function App() {
     }
   }, [])
 
+  const handleRunParametric = useCallback((config) => {
+    // Validate parametric config
+    const errors = []
+
+    if (!config.P || config.P <= 0) {
+      errors.push('A carga P deve ser positiva.')
+    }
+    if (!config.I || config.I <= 0) {
+      errors.push('O momento de inércia I deve ser positivo.')
+    }
+    if (!config.sweepEnd || config.sweepEnd <= 0) {
+      errors.push('O valor final do intervalo deve ser positivo.')
+    }
+    if (!config.sweepStep || config.sweepStep <= 0) {
+      errors.push('O incremento deve ser positivo.')
+    }
+    if (config.sweepStart >= config.sweepEnd) {
+      errors.push('O valor inicial deve ser menor que o final.')
+    }
+    if (config.materials.length === 0) {
+      errors.push('Selecione pelo menos um material.')
+    }
+
+    if (errors.length > 0) {
+      setParametricErrors(errors)
+      setParametricResults(null)
+      return
+    }
+
+    setParametricErrors([])
+
+    try {
+      const result = runParametricSweep(config)
+      setParametricResults(result)
+    } catch (err) {
+      setParametricErrors([`Erro na análise: ${err.message}`])
+      setParametricResults(null)
+    }
+  }, [])
+
   return (
     <div className="app">
       <header className="app-header">
@@ -67,6 +117,31 @@ function App() {
           </svg>
           Simulador de Vigas
         </div>
+
+        {/* Mode tabs */}
+        <nav className="mode-tabs" aria-label="Modo de análise">
+          <button
+            className={`mode-tab ${mode === 'single' ? 'mode-tab--active' : ''}`}
+            onClick={() => setMode('single')}
+            aria-pressed={mode === 'single'}
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+              <path d="M3 10h14M3 10l3-3M3 10l3 3M17 10l-3-3M17 10l-3 3" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+            </svg>
+            Análise Simples
+          </button>
+          <button
+            className={`mode-tab ${mode === 'parametric' ? 'mode-tab--active' : ''}`}
+            onClick={() => setMode('parametric')}
+            aria-pressed={mode === 'parametric'}
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+              <path d="M3 15l4-6 4 3 6-9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Análise Paramétrica
+          </button>
+        </nav>
+
         <div className="app-header__actions">
           <button
             className="help-btn"
@@ -80,36 +155,97 @@ function App() {
       </header>
 
       <main className="app-main">
-        <aside className="app-panel" id="config-panel">
-          <InputPanel onCalculate={handleCalculate} errors={errors} />
-        </aside>
+        {mode === 'single' ? (
+          <>
+            <aside className="app-panel" id="config-panel">
+              <InputPanel onCalculate={handleCalculate} errors={errors} />
+            </aside>
 
-        <section className="app-workspace" id="workspace">
-          {!results ? (
-            <div className="welcome">
-              <svg
-                className="welcome__icon"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M7 4h10v2h-4v12h4v2H7v-2h4V6H7V4z" />
-              </svg>
-              <h2 className="welcome__title">Simulador de Vigas</h2>
-              <p className="welcome__text">
-                Configure a viga no painel à esquerda — tipo de apoio, comprimento
-                e cargas — e clique em &ldquo;Calcular&rdquo; para visualizar os
-                diagramas de esforço cortante, momento fletor e flecha elástica.
-              </p>
-            </div>
-          ) : (
-            <div className="results-area">
-              <BeamSchematic config={results.config} />
-              <DiagramPanel results={results} />
-              <ResultsTable results={results} />
-            </div>
-          )}
-        </section>
+            <section className="app-workspace" id="workspace">
+              {!results ? (
+                <div className="welcome">
+                  <svg
+                    className="welcome__icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 4h10v2h-4v12h4v2H7v-2h4V6H7V4z" />
+                  </svg>
+                  <h2 className="welcome__title">Simulador de Vigas</h2>
+                  <p className="welcome__text">
+                    Configure a viga no painel à esquerda — tipo de apoio, comprimento
+                    e cargas — e clique em &ldquo;Calcular&rdquo; para visualizar os
+                    diagramas de esforço cortante, momento fletor e flecha elástica.
+                  </p>
+                </div>
+              ) : (
+                <div className="results-area">
+                  <BeamSchematic config={results.config} />
+                  <DiagramPanel results={results} />
+                  <ResultsTable results={results} />
+                </div>
+              )}
+            </section>
+          </>
+        ) : (
+          <>
+            <aside className="app-panel" id="parametric-config-panel">
+              <ParametricPanel
+                onRunAnalysis={handleRunParametric}
+                errors={parametricErrors}
+              />
+            </aside>
+
+            <section className="app-workspace" id="parametric-workspace">
+              {!parametricResults ? (
+                <div className="parametric-welcome">
+                  <svg
+                    className="parametric-welcome__icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 20l5-8 4 4 8-12" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="8" cy="12" r="1.5" fill="currentColor" />
+                    <circle cx="12" cy="16" r="1.5" fill="currentColor" />
+                    <circle cx="20" cy="4" r="1.5" fill="currentColor" />
+                  </svg>
+                  <h2 className="parametric-welcome__title">Análise Paramétrica</h2>
+                  <p className="parametric-welcome__text">
+                    Configure os parâmetros no painel à esquerda para executar uma
+                    análise paramétrica. Varie o comprimento L ou a posição do apoio
+                    e compare o comportamento para diferentes materiais (Alumínio, Aço).
+                  </p>
+                  <p className="parametric-welcome__text">
+                    Ideal para resolver problemas de deflexão máxima, energia de
+                    deformação e deslocamento pelo Teorema de Castigliano.
+                  </p>
+                </div>
+              ) : (
+                <div className="parametric-workspace">
+                  <ParametricChart
+                    series={parametricResults.series}
+                    title={parametricResults.title}
+                    xLabel={parametricResults.xLabel}
+                    yLabel={parametricResults.yLabel}
+                    xUnit={parametricResults.xUnit}
+                    yUnit={parametricResults.yUnit}
+                  />
+                  <ParametricResults
+                    series={parametricResults.series}
+                    xLabel={parametricResults.xLabel}
+                    xUnit={parametricResults.xUnit}
+                    yLabel={parametricResults.yLabel}
+                    yUnit={parametricResults.yUnit}
+                  />
+                </div>
+              )}
+            </section>
+          </>
+        )}
       </main>
 
       <Onboarding

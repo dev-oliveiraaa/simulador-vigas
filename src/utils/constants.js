@@ -65,3 +65,41 @@ export const DEFAULT_SECTION = {
   I: null, // cm⁴
   W: null, // cm³
 }
+
+/** Moment of inertia input units */
+export const INERTIA_UNITS = {
+  CM4: 'cm4',
+  MM4: 'mm4',
+}
+
+/** Human-readable labels for inertia units */
+export const INERTIA_UNIT_LABELS = {
+  [INERTIA_UNITS.CM4]: 'cm⁴',
+  [INERTIA_UNITS.MM4]: 'mm⁴',
+}
+
+/** Common material presets */
+export const MATERIAL_PRESETS = {
+  ALUMINUM: { name: 'Alumínio', E: 69, color: '#f59e0b' },
+  STEEL: { name: 'Aço', E: 200, color: '#3b82f6' },
+}
+
+/** Parametric analysis types */
+export const ANALYSIS_TYPES = {
+  MAX_DEFLECTION: 'max_deflection',
+  STRAIN_ENERGY: 'strain_energy',
+  CASTIGLIANO_DISPLACEMENT: 'castigliano_displacement',
+}
+
+/** Human-readable labels for analysis types */
+export const ANALYSIS_TYPE_LABELS = {
+  [ANALYSIS_TYPES.MAX_DEFLECTION]: 'Deflexão Máxima vs L',
+  [ANALYSIS_TYPES.STRAIN_ENERGY]: 'Energia de Deformação vs L',
+  [ANALYSIS_TYPES.CASTIGLIANO_DISPLACEMENT]: 'Deslocamento (Castigliano)',
+}
+
+/** Parametric sweep variable types */
+export const SWEEP_VARIABLES = {
+  LENGTH: 'length',
+  SUPPORT_POSITION: 'support_position',
+}
