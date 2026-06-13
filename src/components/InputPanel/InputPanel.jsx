@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { BEAM_TYPES, BEAM_TYPE_LABELS } from '../../utils/constants.js'
+import { BEAM_TYPES, BEAM_TYPE_LABELS, INERTIA_UNITS, INERTIA_UNIT_LABELS } from '../../utils/constants.js'
+import { mm4ToCm4 } from '../../utils/unitConversion.js'
 import LoadForm from './LoadForm.jsx'
 import LoadList from './LoadList.jsx'
 import './InputPanel.css'
@@ -17,6 +18,7 @@ function InputPanel({ onCalculate, errors }) {
   const [supports, setSupports] = useState([''])
   const [E, setE] = useState('')
   const [I, setI] = useState('')
+  const [inertiaUnit, setInertiaUnit] = useState(INERTIA_UNITS.CM4)
   const [W, setW] = useState('')
   const [loads, setLoads] = useState([])
 
@@ -68,7 +70,7 @@ function InputPanel({ onCalculate, errors }) {
       length: Number(length),
       supports: supportPositions,
       E: E !== '' ? Number(E) : null,
-      I: I !== '' ? Number(I) : null,
+      I: I !== '' ? (inertiaUnit === INERTIA_UNITS.MM4 ? mm4ToCm4(Number(I)) : Number(I)) : null,
       W: W !== '' ? Number(W) : null,
       loads,
     })
@@ -189,14 +191,24 @@ function InputPanel({ onCalculate, errors }) {
           </div>
           <div className="field-group">
             <label htmlFor="section-I">
-              I <span className="field-unit">(cm⁴)</span>
+              I{' '}
+              <select
+                className="unit-selector"
+                value={inertiaUnit}
+                onChange={(e) => setInertiaUnit(e.target.value)}
+                aria-label="Unidade do momento de inércia"
+              >
+                {Object.entries(INERTIA_UNIT_LABELS).map(([val, label]) => (
+                  <option key={val} value={val}>{label}</option>
+                ))}
+              </select>
             </label>
             <input
               id="section-I"
               type="number"
               min="0.01"
               step="0.01"
-              placeholder="Ex: 8500"
+              placeholder={inertiaUnit === INERTIA_UNITS.MM4 ? 'Ex: 314000000' : 'Ex: 8500'}
               value={I}
               onChange={(e) => setI(e.target.value)}
             />
