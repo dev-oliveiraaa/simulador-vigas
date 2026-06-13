@@ -12,27 +12,34 @@ Simulador de vigas para estudantes de Engenharia. Calcula reações de apoio, di
 - **Energia de Deformação e Castigliano**: determinação da energia de deformação interna acumulada na viga e deslocamentos pontuais específicos utilizando o Teorema de Castigliano
 - **Interface responsiva**: layout dinâmico adaptável para desktop e mobile, com abas para seleção de modo (Análise Simples ou Paramétrica)
 
-## Tecnologias
+---
 
 - [React](https://react.dev/) 19
 - [Vite](https://vite.dev/) 8
 - SVG puro para diagramas e gráficos comparativos (sem dependências externas)
 - CSS vanilla com custom properties
 
-## Como usar
+Instale as dependências:
 
 ```bash
-# Instalar dependências
 npm install
+```
 
-# Iniciar servidor de desenvolvimento
+Inicie o servidor de desenvolvimento:
+
+```bash
 npm run dev
+```
 
-# Build de produção
+Para gerar a build de produção:
+
+```bash
 npm run build
 ```
 
-## Unidades
+---
+
+## Unidades Utilizadas
 
 | Grandeza | Unidade |
 |---|---|
@@ -46,11 +53,13 @@ npm run build
 | Energia de deformação | J |
 | Deslocamento (Castigliano) | mm |
 
+---
+
 ## Estrutura do Projeto
 
-```
+```bash
 src/
-├── engine/          # Motor de cálculo (JS puro)
+├── engine/                    # Motor de cálculo estrutural
 │   ├── solver.js
 │   ├── continuousBeamSolver.js
 │   ├── deflection.js
@@ -58,6 +67,7 @@ src/
 │   ├── strainEnergy.js
 │   ├── parametricSweep.js
 │   └── validators.js
+│
 ├── components/
 │   ├── InputPanel/   # Painel de configuração
 │   ├── BeamSchematic/ # Desenho esquemático SVG
@@ -69,3 +79,19 @@ src/
     ├── constants.js
     └── unitConversion.js
 ```
+
+---
+
+## Objetivo do Projeto
+
+O projeto foi desenvolvido com foco educacional, buscando facilitar a visualização e compreensão do comportamento estrutural de vigas em disciplinas como:
+
+- Mecânica dos Sólidos
+- Mecânica das Estruturas
+- Análise Estrutural
+
+---
+
+## Autor
+
+Desenvolvido por Carlos Alexandre.
