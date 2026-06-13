@@ -1,0 +1,204 @@
+/* ============================================
+   ParametricPanel — Analysis config sidebar
+   ============================================ */
+
+.parametric-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.section-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+/* --- Checkbox labels for material selection --- */
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  padding: var(--space-xs) 0;
+  color: var(--color-text-heading);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.material-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.custom-material {
+  padding: var(--space-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   ParametricChart — SVG result charts
+   ============================================ */
+
+.parametric-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.parametric-chart {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.parametric-chart__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.parametric-chart__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-heading);
+}
+
+.parametric-chart__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+.legend-swatch {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.parametric-chart svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-axis-label {
+  font-size: 10px;
+  font-family: 'Inter', system-ui, sans-serif;
+  fill: #6b7280;
+}
+
+.chart-value-label {
+  font-size: 9px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+/* ============================================
+   ParametricResults — Data table
+   ============================================ */
+
+.parametric-results {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.parametric-results__title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-heading);
+  margin-bottom: var(--space-md);
+}
+
+.parametric-results table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.parametric-results th,
+.parametric-results td {
+  padding: var(--space-sm) var(--space-md);
+  text-align: right;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.parametric-results th {
+  font-weight: 600;
+  color: var(--color-text-heading);
+  background: var(--color-bg-panel);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.parametric-results th:first-child,
+.parametric-results td:first-child {
+  text-align: left;
+}
+
+.parametric-results tbody tr:hover {
+  background: var(--color-bg-hover);
+}
+
+.parametric-results .value-cell {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+/* --- Welcome state for parametric --- */
+
+.parametric-welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-md);
+  color: var(--color-text-muted);
+  padding: var(--space-2xl);
+}
+
+.parametric-welcome__icon {
+  width: 56px;
+  height: 56px;
+  color: var(--color-border);
+  margin-bottom: var(--space-sm);
+}
+
+.parametric-welcome__title {
+  font-size: var(--text-xl);
+  color: var(--color-text-heading);
+}
+
+.parametric-welcome__text {
+  font-size: var(--text-sm);
+  max-width: 460px;
+  line-height: 1.6;
+}
