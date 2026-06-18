@@ -82,7 +82,10 @@ export function runParametricSweep(config) {
   // Generate sweep parameter values
   const paramValues = []
   for (let v = sweepStart; v <= sweepEnd + 1e-10; v += sweepStep) {
-    if (v > 0) { // Skip L=0 (degenerate)
+    // Skip L=0 only for length sweeps (a beam with L=0 is degenerate).
+    // For other sweep variables (e.g. support position), v=0 is valid.
+    if (v === 0 && sweepVariable === 'length') continue
+    if (v >= 0) {
       paramValues.push(sanitizeNumber(v))
     }
   }

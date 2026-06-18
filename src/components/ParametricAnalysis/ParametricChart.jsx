@@ -38,6 +38,9 @@ function ParametricChart({ series, title, xLabel, yLabel, xUnit, yUnit }) {
     }
   }
 
+  // Force axis to start at zero when data includes the origin
+  if (xMin >= 0 && xMin < 1e-10) xMin = 0
+
   // Handle edge cases
   if (xMax === xMin) { xMin -= 1; xMax += 1 }
   if (Math.abs(yMax - yMin) < 1e-10) { yMin -= 1; yMax += 1 }
@@ -47,14 +50,15 @@ function ParametricChart({ series, title, xLabel, yLabel, xUnit, yUnit }) {
   const paddedYMin = yMin - yRange * 0.1
   const paddedYMax = yMax + yRange * 0.1
 
-  const toSvgX = (v) => PADDING.left + ((v - xMin) / (xMax - xMin)) * drawWidth
+  const xRange = xMax - xMin
+  const toSvgX = (v) => PADDING.left + ((v - xMin) / xRange) * drawWidth
   const toSvgY = (v) => PADDING.top + (1 - (v - paddedYMin) / (paddedYMax - paddedYMin)) * drawHeight
 
-  // Generate grid ticks
+  // Generate grid ticks — always include xMin (0) as first tick
   const numXTicks = Math.min(10, Math.max(4, Math.ceil(xMax - xMin)))
   const xTicks = []
   for (let i = 0; i <= numXTicks; i++) {
-    xTicks.push(xMin + (i / numXTicks) * (xMax - xMin))
+    xTicks.push(xMin + (i / numXTicks) * xRange)
   }
 
   const numYTicks = 6
