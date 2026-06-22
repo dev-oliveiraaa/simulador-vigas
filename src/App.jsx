@@ -7,9 +7,13 @@ import Onboarding from './components/Onboarding/Onboarding.jsx'
 import ParametricPanel from './components/ParametricAnalysis/ParametricPanel.jsx'
 import ParametricChart from './components/ParametricAnalysis/ParametricChart.jsx'
 import ParametricResults from './components/ParametricAnalysis/ParametricResults.jsx'
+import DeflectionSlopeCharts from './components/ParametricAnalysis/DeflectionSlopeCharts.jsx'
+import DeflectionSlopeTable from './components/ParametricAnalysis/DeflectionSlopeTable.jsx'
 import { validateConfig, validateLoad } from './engine/validators.js'
 import { generateDiagramData } from './engine/diagramData.js'
 import { runParametricSweep } from './engine/parametricSweep.js'
+import { runDeflectionSlopeAnalysis } from './engine/elasticCurve.js'
+import { ANALYSIS_TYPES } from './utils/constants.js'
 import './App.css'
 
 /**
@@ -64,7 +68,55 @@ function App() {
   }, [])
 
   const handleRunParametric = useCallback((config) => {
-    // Validate parametric config
+    // Check if this is a deflection-slope analysis
+    if (config.analysisType === ANALYSIS_TYPES.DEFLECTION_SLOPE_VS_X) {
+      // Validate deflection-slope specific config
+      const errors = []
+
+      if (!config.totalLength || config.totalLength <= 0) {
+        errors.push('O comprimento total da viga deve ser positivo.')
+      }
+      if (!config.I || config.I <= 0) {
+        errors.push('O momento de inércia I deve ser positivo.')
+      }
+      if (config.sweepStart === undefined || config.sweepStart === null || isNaN(config.sweepStart)) {
+        errors.push('O x inicial é obrigatório.')
+      }
+      if (!config.sweepEnd || config.sweepEnd <= 0) {
+        errors.push('O x final deve ser positivo.')
+      }
+      if (!config.sweepStep || config.sweepStep <= 0) {
+        errors.push('O incremento deve ser positivo.')
+      }
+      if (config.sweepStart >= config.sweepEnd) {
+        errors.push('O x inicial deve ser menor que o x final.')
+      }
+      if (!config.loads || config.loads.length === 0) {
+        errors.push('Adicione pelo menos uma carga.')
+      }
+      if (config.materials.length === 0) {
+        errors.push('Selecione pelo menos um material.')
+      }
+
+      if (errors.length > 0) {
+        setParametricErrors(errors)
+        setParametricResults(null)
+        return
+      }
+
+      setParametricErrors([])
+
+      try {
+        const result = runDeflectionSlopeAnalysis(config)
+        setParametricResults(result)
+      } catch (err) {
+        setParametricErrors([`Erro na análise: ${err.message}`])
+        setParametricResults(null)
+      }
+      return
+    }
+
+    // Standard parametric sweep validation
     const errors = []
 
     if (!config.P || config.P <= 0) {
@@ -220,9 +272,23 @@ function App() {
                     e compare o comportamento para diferentes materiais (Alumínio, Aço).
                   </p>
                   <p className="parametric-welcome__text">
-                    Ideal para resolver problemas de deflexão máxima, energia de
-                    deformação e deslocamento pelo Teorema de Castigliano.
+                    Use a análise <strong>&ldquo;Deflexão e Inclinação vs x&rdquo;</strong> para
+                    gerar gráficos de y(x) e θ(x) ao longo da viga, com configuração
+                    completa de cargas e apoios.
                   </p>
+                </div>
+              ) : parametricResults.isDeflectionSlope ? (
+                <div className="parametric-workspace">
+                  <DeflectionSlopeCharts
+                    deflectionSeries={parametricResults.deflectionSeries}
+                    slopeSeries={parametricResults.slopeSeries}
+                  />
+                  <DeflectionSlopeTable
+                    tableRows={parametricResults.tableRows}
+                    materials={parametricResults.materials}
+                    reactions={parametricResults.reactions}
+                    reactionMoments={parametricResults.reactionMoments}
+                  />
                 </div>
               ) : (
                 <div className="parametric-workspace">

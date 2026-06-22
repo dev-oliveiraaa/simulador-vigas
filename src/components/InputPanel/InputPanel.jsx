@@ -55,6 +55,7 @@ function InputPanel({ onCalculate, errors }) {
         supportPositions = [0]
         break
       case BEAM_TYPES.OVERHANGING:
+      case BEAM_TYPES.PROPPED_CANTILEVER:
       case BEAM_TYPES.CONTINUOUS: {
         supportPositions = supports
           .map(s => Number(s))
@@ -77,7 +78,7 @@ function InputPanel({ onCalculate, errors }) {
   }
 
   const showSupportsInput =
-    beamType === BEAM_TYPES.OVERHANGING || beamType === BEAM_TYPES.CONTINUOUS
+    beamType === BEAM_TYPES.OVERHANGING || beamType === BEAM_TYPES.PROPPED_CANTILEVER || beamType === BEAM_TYPES.CONTINUOUS
 
   return (
     <form className="input-panel" onSubmit={handleSubmit} id="beam-config-form">
