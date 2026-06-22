@@ -317,8 +317,37 @@
 
 .table-scroll {
   overflow-x: auto;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  padding: var(--space-md);
 }
 
 .table-scroll table {
   min-width: 600px;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-base);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.table-scroll th {
+  border-top: 2px solid var(--color-text-heading);
+  border-bottom: 1px solid var(--color-text-heading);
+  padding: var(--space-sm) var(--space-xs);
+  font-weight: 600;
+  color: var(--color-text-heading);
+}
+
+.table-scroll td {
+  padding: var(--space-xs);
+  border: none;
+}
+
+.table-scroll tr:last-child td {
+  border-bottom: 2px solid var(--color-text-heading);
+}
+
+.table-scroll tbody tr:hover {
+  background: var(--color-bg-hover);
 }

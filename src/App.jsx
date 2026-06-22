@@ -165,7 +165,7 @@ function App() {
             fill="currentColor"
             aria-hidden="true"
           >
-            <path d="M7 4h10v2h-4v12h4v2H7v-2h4V6H7V4z" />
+            <path d="M4 4h16v3h-5v10h5v3H4v-3h5V7H4V4z" />
           </svg>
           Simulador de Vigas
         </div>
