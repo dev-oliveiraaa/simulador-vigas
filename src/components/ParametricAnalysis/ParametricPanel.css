@@ -202,3 +202,123 @@
   max-width: 460px;
   line-height: 1.6;
 }
+
+/* ============================================
+   DeflectionSlope — Load form & list
+   ============================================ */
+
+.ds-load-form {
+  padding: var(--space-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.ds-load-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.ds-load-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+
+.ds-load-item__desc {
+  color: var(--color-text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Support row reuse */
+.support-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.support-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.support-row label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  min-width: 80px;
+}
+
+.support-row input {
+  flex: 1;
+}
+
+/* ============================================
+   DeflectionSlopeCharts — Multi-chart layout
+   ============================================ */
+
+.deflection-slope-charts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ============================================
+   DeflectionSlopeTable — Reactions summary
+   ============================================ */
+
+.reactions-summary {
+  margin-bottom: var(--space-sm);
+}
+
+.reactions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.reaction-item {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  min-width: 140px;
+}
+
+.reaction-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.reaction-value {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-heading);
+  font-family: var(--font-mono);
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table-scroll table {
+  min-width: 600px;
+}
