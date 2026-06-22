@@ -276,3 +276,174 @@ export function momentAt(x, loads, reactions, reactionMoments = []) {
 
   return sanitizeNumber(M)
 }
+
+/**
+ * Solve a propped cantilever beam (simple support at one end, fixed at other).
+ *
+ * Statically indeterminate to the 1st degree.
+ * Uses compatibility: treat as cantilever from the fixed end,
+ * then find the reaction at the simple support that makes deflection = 0 there.
+ *
+ * @param {number} L - Total beam length
+ * @param {object[]} loads - Array of load definitions
+ * @param {number} supportPos - Position of the simple support
+ * @param {number} fixedPos - Position of the fixed end (engaste)
+ * @returns {{ Ra: number, Rb: number, Mb: number }}
+ *   Ra = reaction at simple support, Rb = reaction at fixed end, Mb = moment at fixed end
+ */
+export function solveProppedCantilever(L, loads, supportPos, fixedPos) {
+  // We treat the beam as a cantilever fixed at fixedPos.
+  // The redundant is the reaction Ra at supportPos.
+  // We need: delta_loads(supportPos) + Ra * delta_unit(supportPos) = 0
+  //   where delta_loads = deflection at supportPos due to loads only (cantilever)
+  //   and delta_unit = deflection at supportPos due to unit load at supportPos (cantilever)
+
+  const numPoints = 1001
+  const xValues = []
+  for (let i = 0; i < numPoints; i++) {
+    xValues.push((i / (numPoints - 1)) * L)
+  }
+
+  // Determine if fixed end is at left (x=0) or right (x=L)
+  const fixedAtLeft = fixedPos < supportPos
+
+  // --- Deflection due to applied loads (cantilever from fixed end) ---
+  // Solve cantilever reactions at fixed end
+  const cantReactions = []
+  const cantReactionMoments = []
+
+  if (fixedAtLeft) {
+    const { R, M } = solveCantilever(L, loads)
+    cantReactions.push({ position: fixedPos, force: R })
+    cantReactionMoments.push({ position: fixedPos, moment: M })
+  } else {
+    // Fixed at right: need to treat loads with reversed reference
+    // Sum forces and moments about fixedPos
+    let totalForce = 0
+    let totalMoment = 0
+    for (const load of loads) {
+      const res = loadResultant(load, fixedPos)
+      totalForce += res.force
+      totalMoment += res.momentAboutRef
+    }
+    cantReactions.push({ position: fixedPos, force: totalForce })
+    cantReactionMoments.push({ position: fixedPos, moment: totalMoment })
+  }
+
+  // Compute M(x) due to loads only
+  const mLoads = xValues.map(x =>
+    momentAt(x, loads, cantReactions, cantReactionMoments)
+  )
+
+  // Integrate M(x)/EI to get slope and deflection (use EI=1 since it cancels)
+  const slopeLoads = integrateFromFixed(xValues, mLoads, fixedAtLeft)
+  const deflLoads = integrateFromFixed(xValues, slopeLoads, fixedAtLeft)
+
+  // --- Deflection due to unit upward load at supportPos ---
+  const unitLoads = [{ type: 'point', position: supportPos, value: -1 }]
+  // Negative because upward reaction counteracts downward convention
+
+  const unitCantReactions = []
+  const unitCantReactionMoments = []
+
+  if (fixedAtLeft) {
+    const { R, M } = solveCantilever(L, unitLoads)
+    unitCantReactions.push({ position: fixedPos, force: R })
+    unitCantReactionMoments.push({ position: fixedPos, moment: M })
+  } else {
+    let totalForce = 0
+    let totalMoment = 0
+    for (const load of unitLoads) {
+      const res = loadResultant(load, fixedPos)
+      totalForce += res.force
+      totalMoment += res.momentAboutRef
+    }
+    unitCantReactions.push({ position: fixedPos, force: totalForce })
+    unitCantReactionMoments.push({ position: fixedPos, moment: totalMoment })
+  }
+
+  const mUnit = xValues.map(x =>
+    momentAt(x, unitLoads, unitCantReactions, unitCantReactionMoments)
+  )
+
+  const slopeUnit = integrateFromFixed(xValues, mUnit, fixedAtLeft)
+  const deflUnit = integrateFromFixed(xValues, slopeUnit, fixedAtLeft)
+
+  // Find deflection at supportPos
+  const supportIdx = findClosestIndex(xValues, supportPos)
+  const deltaLoads = deflLoads[supportIdx]
+  const deltaUnit = deflUnit[supportIdx]
+
+  // Ra * deltaUnit + deltaLoads = 0  =>  Ra = -deltaLoads / deltaUnit
+  let Ra = 0
+  if (Math.abs(deltaUnit) > 1e-15) {
+    Ra = -deltaLoads / deltaUnit
+  }
+
+  // Total vertical equilibrium: Ra + Rb = total downward load
+  let totalDownward = 0
+  for (const load of loads) {
+    const res = loadResultant(load, 0)
+    totalDownward += res.force
+  }
+  const Rb = sanitizeNumber(totalDownward - Ra)
+  Ra = sanitizeNumber(Ra)
+
+  // Moment at fixed end: sum moments about fixedPos
+  let Mb = 0
+  for (const load of loads) {
+    const res = loadResultant(load, fixedPos)
+    Mb += res.momentAboutRef
+  }
+  // Subtract Ra contribution
+  Mb -= Ra * (supportPos - fixedPos)
+  Mb = sanitizeNumber(Mb)
+
+  return { Ra, Rb, Mb }
+}
+
+/**
+ * Integrate an array from the fixed end using trapezoidal rule.
+ * @param {number[]} xValues
+ * @param {number[]} values
+ * @param {boolean} fromLeft - If true, integrate from left (x=0); otherwise from right (x=L)
+ * @returns {number[]}
+ */
+function integrateFromFixed(xValues, values, fromLeft) {
+  const n = xValues.length
+  const result = new Array(n).fill(0)
+
+  if (fromLeft) {
+    for (let i = 1; i < n; i++) {
+      const dx = xValues[i] - xValues[i - 1]
+      result[i] = result[i - 1] + (values[i - 1] + values[i]) * dx / 2
+    }
+  } else {
+    // Integrate from right to left
+    for (let i = n - 2; i >= 0; i--) {
+      const dx = xValues[i + 1] - xValues[i]
+      result[i] = result[i + 1] - (values[i] + values[i + 1]) * dx / 2
+    }
+  }
+
+  return result
+}
+
+/**
+ * Find the index of the closest value in an array.
+ * @param {number[]} arr
+ * @param {number} target
+ * @returns {number}
+ */
+function findClosestIndex(arr, target) {
+  let bestIdx = 0
+  let bestDist = Math.abs(arr[0] - target)
+  for (let i = 1; i < arr.length; i++) {
+    const dist = Math.abs(arr[i] - target)
+    if (dist < bestDist) {
+      bestDist = dist
+      bestIdx = i
+    }
+  }
+  return bestIdx
+}
