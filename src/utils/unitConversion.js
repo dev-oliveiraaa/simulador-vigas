@@ -63,3 +63,51 @@ export function mToMm(meters) {
 export function knm2ToMPa(knm2) {
   return knm2 / 1000
 }
+
+/**
+ * Convert moment of inertia from mm⁴ to m⁴.
+ * 1 mm⁴ = 1e-12 m⁴
+ * @param {number} mm4 - Moment of inertia in mm⁴
+ * @returns {number} Moment of inertia in m⁴
+ */
+export function mm4ToM4(mm4) {
+  return mm4 * 1e-12
+}
+
+/**
+ * Format a number using Brazilian locale (comma as decimal separator).
+ * Omits unnecessary trailing zeros for integers.
+ *
+ * @param {number} value - The numeric value
+ * @param {number} [maxDecimals=4] - Maximum decimal places
+ * @returns {string} Formatted string with comma decimal separator
+ */
+export function formatBR(value, maxDecimals = 4) {
+  if (value === undefined || value === null) return '—'
+  if (!isFinite(value)) return '—'
+
+  // Check if value is effectively an integer
+  if (Number.isInteger(value) || Math.abs(value - Math.round(value)) < 1e-9) {
+    return Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  }
+
+  // Determine appropriate decimal places
+  const absVal = Math.abs(value)
+  let decimals = maxDecimals
+  if (absVal >= 1000) decimals = Math.min(maxDecimals, 2)
+  else if (absVal >= 100) decimals = Math.min(maxDecimals, 3)
+  else if (absVal >= 1) decimals = Math.min(maxDecimals, 3)
+
+  // Format and strip trailing zeros
+  let formatted = value.toFixed(decimals)
+  // Remove trailing zeros after decimal point
+  if (formatted.includes('.')) {
+    formatted = formatted.replace(/0+$/, '')
+    formatted = formatted.replace(/\.$/, '')
+  }
+
+  // Replace dot with comma for Brazilian format
+  formatted = formatted.replace('.', ',')
+
+  return formatted
+}

@@ -7,7 +7,7 @@
 
 import { BEAM_TYPES, NUM_POINTS } from '../utils/constants.js'
 import { mToMm, knm2ToMPa, cm3ToM3 } from '../utils/unitConversion.js'
-import { solveSimplySupported, solveCantilever, shearAt, momentAt } from './solver.js'
+import { solveSimplySupported, solveCantilever, solveProppedCantilever, shearAt, momentAt } from './solver.js'
 import { solveContinuousBeam } from './continuousBeamSolver.js'
 import { calculateDeflection, calculateCantileverDeflection } from './deflection.js'
 import { sanitizeNumber } from './validators.js'
@@ -95,6 +95,21 @@ export function generateDiagramData(config) {
       break
     }
 
+    case BEAM_TYPES.PROPPED_CANTILEVER: {
+      const supports = config.supports || [0, L]
+      const sortedSupports = [...supports].sort((a, b) => a - b)
+      const supportPos = sortedSupports[0]
+      const fixedPos = sortedSupports[sortedSupports.length - 1]
+      const { Ra, Rb, Mb } = solveProppedCantilever(L, loads, supportPos, fixedPos)
+      reactions = [
+        { position: supportPos, force: Ra },
+        { position: fixedPos, force: Rb },
+      ]
+      reactionMoments = [{ position: fixedPos, moment: Mb }]
+      supportPositions = sortedSupports
+      break
+    }
+
     case BEAM_TYPES.CONTINUOUS: {
       const supports = config.supports || [0, L]
       const sortedSupports = [...supports].sort((a, b) => a - b)
@@ -122,7 +137,7 @@ export function generateDiagramData(config) {
       x,
       loads,
       reactions,
-      type === BEAM_TYPES.CANTILEVER ? reactionMoments : []
+      type === BEAM_TYPES.CANTILEVER || type === BEAM_TYPES.PROPPED_CANTILEVER ? reactionMoments : []
     ),
   }))
 
@@ -179,7 +194,7 @@ export function generateDiagramData(config) {
     dData,
     hasDeflection,
     reactions,
-    reactionMoments: type === BEAM_TYPES.CANTILEVER ? reactionMoments : [],
+    reactionMoments: type === BEAM_TYPES.CANTILEVER || type === BEAM_TYPES.PROPPED_CANTILEVER ? reactionMoments : [],
     supportPositions,
     extremes: {
       shear: vExtremes,
@@ -192,7 +207,7 @@ export function generateDiagramData(config) {
         position: r.position,
         force: Number(r.force.toFixed(4)),
       })),
-      reactionMoments: type === BEAM_TYPES.CANTILEVER
+      reactionMoments: type === BEAM_TYPES.CANTILEVER || type === BEAM_TYPES.PROPPED_CANTILEVER
         ? reactionMoments.map(rm => ({
             position: rm.position,
             moment: Number(rm.moment.toFixed(4)),

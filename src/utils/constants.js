@@ -29,6 +29,7 @@ export const BEAM_TYPES = {
   SIMPLY_SUPPORTED: 'simply_supported',
   CANTILEVER: 'cantilever',
   OVERHANGING: 'overhanging',
+  PROPPED_CANTILEVER: 'propped_cantilever',
   CONTINUOUS: 'continuous',
 }
 
@@ -37,6 +38,7 @@ export const BEAM_TYPE_LABELS = {
   [BEAM_TYPES.SIMPLY_SUPPORTED]: 'Simplesmente Apoiada',
   [BEAM_TYPES.CANTILEVER]: 'Balanço (Engastada-Livre)',
   [BEAM_TYPES.OVERHANGING]: 'Com Balanço',
+  [BEAM_TYPES.PROPPED_CANTILEVER]: 'Apoiada-Engastada',
   [BEAM_TYPES.CONTINUOUS]: 'Contínua',
 }
 
@@ -89,6 +91,7 @@ export const ANALYSIS_TYPES = {
   MAX_DEFLECTION: 'max_deflection',
   STRAIN_ENERGY: 'strain_energy',
   CASTIGLIANO_DISPLACEMENT: 'castigliano_displacement',
+  DEFLECTION_SLOPE_VS_X: 'deflection_slope_vs_x',
 }
 
 /** Human-readable labels for analysis types */
@@ -96,6 +99,7 @@ export const ANALYSIS_TYPE_LABELS = {
   [ANALYSIS_TYPES.MAX_DEFLECTION]: 'Deflexão Máxima vs L',
   [ANALYSIS_TYPES.STRAIN_ENERGY]: 'Energia de Deformação vs L',
   [ANALYSIS_TYPES.CASTIGLIANO_DISPLACEMENT]: 'Deslocamento (Castigliano)',
+  [ANALYSIS_TYPES.DEFLECTION_SLOPE_VS_X]: 'Deflexão e Inclinação vs x',
 }
 
 /** Parametric sweep variable types */
