@@ -1,3 +1,5 @@
+import { formatBR } from '../../utils/unitConversion.js'
+
 /**
  * ParametricResults — Table showing computed values for each sweep point.
  *
@@ -31,7 +33,7 @@ function ParametricResults({ series, xLabel, xUnit, yLabel, yUnit }) {
         <tbody>
           {paramValues.map((param, rowIdx) => (
             <tr key={rowIdx}>
-              <td className="value-cell">{param.toFixed(2)}</td>
+              <td className="value-cell">{formatBR(param, 2)}</td>
               {series.map((s) => (
                 <td key={s.name} className="value-cell" style={{ color: s.color }}>
                   {formatResultValue(s.data[rowIdx]?.value)}
@@ -50,10 +52,8 @@ function ParametricResults({ series, xLabel, xUnit, yLabel, yUnit }) {
  */
 function formatResultValue(value) {
   if (value === undefined || value === null) return '—'
-  if (Math.abs(value) < 1e-10) return '0.0000'
-  if (Math.abs(value) >= 1000) return value.toFixed(2)
-  if (Math.abs(value) >= 1) return value.toFixed(4)
-  return value.toExponential(4)
+  if (Math.abs(value) < 1e-10) return '0'
+  return formatBR(value, 4)
 }
 
 export default ParametricResults

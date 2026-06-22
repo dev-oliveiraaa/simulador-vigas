@@ -1,4 +1,5 @@
 import { BEAM_TYPES } from '../../utils/constants.js'
+import { formatBR } from '../../utils/unitConversion.js'
 import './ResultsTable.css'
 
 /**
@@ -35,11 +36,11 @@ function ResultsTable({ results }) {
                 R<sub>{String.fromCharCode(65 + idx)}</sub>
               </td>
               <td>
-                <span className="results-table__value">{r.force.toFixed(4)}</span>
+                <span className="results-table__value">{formatBR(r.force, 4)}</span>
                 <span className="results-table__unit">kN</span>
               </td>
               <td>
-                x = {r.position.toFixed(2)} m
+                x = {formatBR(r.position, 2)} m
               </td>
             </tr>
           ))}
@@ -52,11 +53,11 @@ function ResultsTable({ results }) {
                   M<sub>engaste</sub>
                 </td>
                 <td>
-                  <span className="results-table__value">{rm.moment.toFixed(4)}</span>
+                  <span className="results-table__value">{formatBR(rm.moment, 4)}</span>
                   <span className="results-table__unit">kN·m</span>
                 </td>
                 <td>
-                  x = {rm.position.toFixed(2)} m
+                  x = {formatBR(rm.position, 2)} m
                 </td>
               </tr>
             ))}
@@ -70,19 +71,19 @@ function ResultsTable({ results }) {
           <tr>
             <td>M<sub>máx</sub></td>
             <td>
-              <span className="results-table__value">{summary.maxMoment.value.toFixed(4)}</span>
+              <span className="results-table__value">{formatBR(summary.maxMoment.value, 4)}</span>
               <span className="results-table__unit">kN·m</span>
             </td>
-            <td>x = {summary.maxMoment.position.toFixed(2)} m</td>
+            <td>x = {formatBR(summary.maxMoment.position, 2)} m</td>
           </tr>
           {summary.minMoment.value < -0.001 && (
             <tr>
               <td>M<sub>mín</sub></td>
               <td>
-                <span className="results-table__value">{summary.minMoment.value.toFixed(4)}</span>
+                <span className="results-table__value">{formatBR(summary.minMoment.value, 4)}</span>
                 <span className="results-table__unit">kN·m</span>
               </td>
-              <td>x = {summary.minMoment.position.toFixed(2)} m</td>
+              <td>x = {formatBR(summary.minMoment.position, 2)} m</td>
             </tr>
           )}
 
@@ -99,11 +100,11 @@ function ResultsTable({ results }) {
                   <td>δ<sub>máx</sub></td>
                   <td>
                     <span className="results-table__value">
-                      {summary.maxDeflection.value.toFixed(4)}
+                      {formatBR(summary.maxDeflection.value, 4)}
                     </span>
                     <span className="results-table__unit">mm</span>
                   </td>
-                  <td>x = {summary.maxDeflection.position.toFixed(2)} m</td>
+                  <td>x = {formatBR(summary.maxDeflection.position, 2)} m</td>
                 </tr>
               )}
               {summary.minDeflection &&
@@ -113,11 +114,11 @@ function ResultsTable({ results }) {
                     <td>δ<sub>mín</sub></td>
                     <td>
                       <span className="results-table__value">
-                        {summary.minDeflection.value.toFixed(4)}
+                        {formatBR(summary.minDeflection.value, 4)}
                       </span>
                       <span className="results-table__unit">mm</span>
                     </td>
-                    <td>x = {summary.minDeflection.position.toFixed(2)} m</td>
+                    <td>x = {formatBR(summary.minDeflection.position, 2)} m</td>
                   </tr>
                 )}
             </>
@@ -135,7 +136,7 @@ function ResultsTable({ results }) {
                 <td>σ<sub>máx</sub></td>
                 <td>
                   <span className="results-table__value results-table__stress">
-                    {summary.maxStress.toFixed(2)}
+                    {formatBR(summary.maxStress, 2)}
                   </span>
                   <span className="results-table__unit">MPa</span>
                 </td>

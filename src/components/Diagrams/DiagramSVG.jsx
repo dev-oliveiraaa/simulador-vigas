@@ -4,6 +4,7 @@
  * Receives an array of data points and renders a polyline with filled area,
  * axis labels, grid lines, and annotated extremes.
  */
+import { formatBR } from '../../utils/unitConversion.js'
 
 const SVG_WIDTH = 800
 const SVG_HEIGHT = 150
@@ -145,7 +146,7 @@ function DiagramSVG({ data, strokeColor, fillColor, label, unit, beamLength, ext
                 textAnchor="middle"
                 className="diagram-axis-label"
               >
-                {xVal.toFixed(1)}
+                {formatBR(xVal, 1)}
               </text>
             </g>
           )
@@ -225,7 +226,7 @@ function ExtremeAnnotation({ x, y, value, position, color, unit, above }) {
         className="diagram-annotation"
         fill={color}
       >
-        {value.toFixed(2)} {unit}
+        {formatBR(value, 2)} {unit}
       </text>
       <text
         x={x}
@@ -233,7 +234,7 @@ function ExtremeAnnotation({ x, y, value, position, color, unit, above }) {
         textAnchor="middle"
         className="diagram-axis-label"
       >
-        x = {position.toFixed(2)} m
+        x = {formatBR(position, 2)} m
       </text>
     </g>
   )
@@ -244,9 +245,7 @@ function ExtremeAnnotation({ x, y, value, position, color, unit, above }) {
  */
 function formatAxisValue(value) {
   if (Math.abs(value) < 0.01) return '0'
-  if (Math.abs(value) >= 100) return value.toFixed(0)
-  if (Math.abs(value) >= 10) return value.toFixed(1)
-  return value.toFixed(2)
+  return formatBR(value, 2)
 }
 
 export default DiagramSVG

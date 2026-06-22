@@ -264,16 +264,14 @@ function ParametricChart({ series, title, xLabel, yLabel, xUnit, yUnit }) {
   )
 }
 
+import { formatBR } from '../../utils/unitConversion.js'
+
 /**
  * Format a numeric value for display, avoiding unnecessary decimals.
  */
 function formatValue(value) {
   if (Math.abs(value) < 0.001) return '0'
-  if (Math.abs(value) >= 1000) return value.toFixed(1)
-  if (Math.abs(value) >= 100) return value.toFixed(1)
-  if (Math.abs(value) >= 10) return value.toFixed(2)
-  if (Math.abs(value) >= 1) return value.toFixed(3)
-  return value.toFixed(4)
+  return formatBR(value, 4)
 }
 
 export default ParametricChart
